@@ -46,9 +46,21 @@ func testApp() (*fiber.App, *gorm.DB) {
 	config := coresvc.NewAppConfig()
 	db := newTestDBPool(config)
 
-	db.Exec("DELETE FROM users")
-	db.Exec("DELETE FROM locations")
+	db.Exec("TRUNCATE users")
+	db.Exec("TRUNCATE locations")
 	return newApp(db), db
+}
+
+func seedListingData(db *gorm.DB) {
+	db.Exec(`
+		INSERT INTO locations(building_name, address, city, country, phone_number) VALUES
+			('Cyber Cafe X', 'Rose Blooming Town Street', 'Singapore', 'Singapore', '65432111'),
+			('Big City Mall', 'Red Hill Road 03-44', 'Penang', 'Malaysia', '8387133'),
+			('Toast Link Town', 'Crepe Seed Street 11-11', 'Jakarta', 'Indonesia', '99213911'),
+			('Mighty House', 'Blue Street', 'Bangkok', 'Thailand', '78432111'),
+			('Silent Cave', 'Green Street', 'Hanoi', 'Vietnam', '52332322'),
+			('Cross Junction', 'Red Tower Street', 'Perth', 'Australia', '87432111');
+	`)
 }
 
 func TestApp(t *testing.T) {
@@ -130,4 +142,57 @@ func TestLogin(t *testing.T) {
 		t.Errorf("It should allow login with supplied jwt token")
 	}
 
+}
+
+func TestLocationListing(t *testing.T) {
+	app, db := testApp()
+	seedListingData(db)
+
+	resp, _ := app.Test(httptest.NewRequest(
+		"GET",
+		"/locations",
+		nil),
+	)
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Home page didn't return %v instead returning %v", http.StatusOK, resp.StatusCode)
+	}
+
+	content, _ := ioutil.ReadAll(resp.Body)
+	if string(content) == "[]" {
+		t.Error("it should return some locations")
+	}
+
+	location := &coresvc.Location{}
+	db.Order("id DESC").First(location)
+
+	resp, _ = app.Test(httptest.NewRequest(
+		"POST",
+		"/locations",
+		strings.NewReader(fmt.Sprintf(`{"last_building_name": "XTown", "last_id": %d}`, location.ID))),
+	)
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Home page didn't return %v instead returning %v", http.StatusOK, resp.StatusCode)
+	}
+
+	content, _ = ioutil.ReadAll(resp.Body)
+	if string(content) != "[]" {
+		t.Errorf("it should return empty list instead of %v", string(content))
+	}
+}
+
+func TestLocationDetail(t *testing.T) {
+	app, db := testApp()
+	seedListingData(db)
+
+	location := &coresvc.Location{}
+	db.First(location)
+
+	resp, _ := app.Test(httptest.NewRequest(
+		"GET",
+		fmt.Sprintf("/locations/%d", location.ID),
+		nil),
+	)
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Home page didn't return %v instead returning %v", http.StatusOK, resp.StatusCode)
+	}
 }

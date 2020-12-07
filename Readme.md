@@ -60,3 +60,16 @@ POST /auths/verify
 e.g.
 curl -X POST "http://localhost:5678/auths/verify" -H "Accept: application/json" -H "Authorization: Bearer {jwtToken}"
 ```
+
+```
+GET /locations
+
+curl "http://localhost:5678/locations"
+```
+
+
+```
+GET /locations/:id
+
+curl "http://localhost:5678/locations/1"
+```
