@@ -10,13 +10,13 @@ import (
 
 func seedListingData(db *gorm.DB) {
 	db.Exec(`
-		INSERT INTO locations(building_name, address, city, country, phone_number) VALUES
-			('Cyber Cafe X', 'Rose Blooming Town Street', 'Singapore', 'Singapore', '65432111'),
-			('Big City Mall', 'Red Hill Road 03-44', 'Penang', 'Malaysia', '8387133'),
-			('Toast Link Town', 'Crepe Seed Street 11-11', 'Jakarta', 'Indonesia', '99213911'),
-			('Mighty House', 'Blue Street', 'Bangkok', 'Thailand', '78432111'),
-			('Silent Cave', 'Green Street', 'Hanoi', 'Vietnam', '52332322'),
-			('Cross Junction', 'Red Tower Street', 'Perth', 'Australia', '87432111');
+		INSERT INTO locations(building_name, address, city, country, phone_number, available_slot) VALUES
+			('Cyber Cafe X', 'Rose Blooming Town Street', 'Singapore', 'Singapore', '65432111', 100),
+			('Big City Mall', 'Red Hill Road 03-44', 'Penang', 'Malaysia', '8387133', 100),
+			('Toast Link Town', 'Crepe Seed Street 11-11', 'Jakarta', 'Indonesia', '99213911', 100),
+			('Mighty House', 'Blue Street', 'Bangkok', 'Thailand', '78432111', 100),
+			('Silent Cave', 'Green Street', 'Hanoi', 'Vietnam', '52332322', 100),
+			('Cross Junction', 'Red Tower Street', 'Perth', 'Australia', '87432111', 100);
 	`)
 }
 
@@ -36,4 +36,8 @@ func main() {
 	fmt.Println("Migrate user locations table")
 	db.Exec("CREATE UNIQUE INDEX uniq_preferred_locations ON users (user_id)")
 	db.AutoMigrate(&coresvc.UserLocation{})
+
+	fmt.Println("Migrate bookings table")
+	db.AutoMigrate(&coresvc.Booking{})
+	db.Exec("CREATE UNIQUE INDEX uniq_bookings ON bookings (user_id, location_id)")
 }

@@ -52,13 +52,13 @@ func testApp() (*fiber.App, *gorm.DB) {
 
 func seedListingData(db *gorm.DB) {
 	db.Exec(`
-		INSERT INTO locations(building_name, address, city, country, phone_number) VALUES
-			('Cyber Cafe X', 'Rose Blooming Town Street', 'Singapore', 'Singapore', '65432111'),
-			('Big City Mall', 'Red Hill Road 03-44', 'Penang', 'Malaysia', '8387133'),
-			('Toast Link Town', 'Crepe Seed Street 11-11', 'Jakarta', 'Indonesia', '99213911'),
-			('Mighty House', 'Blue Street', 'Bangkok', 'Thailand', '78432111'),
-			('Silent Cave', 'Green Street', 'Hanoi', 'Vietnam', '52332322'),
-			('Cross Junction', 'Red Tower Street', 'Perth', 'Australia', '87432111');
+		INSERT INTO locations(building_name, address, city, country, phone_number, available_slot) VALUES
+			('Cyber Cafe X', 'Rose Blooming Town Street', 'Singapore', 'Singapore', '65432111', 100),
+			('Big City Mall', 'Red Hill Road 03-44', 'Penang', 'Malaysia', '8387133', 100),
+			('Toast Link Town', 'Crepe Seed Street 11-11', 'Jakarta', 'Indonesia', '99213911', 100),
+			('Mighty House', 'Blue Street', 'Bangkok', 'Thailand', '78432111', 100),
+			('Silent Cave', 'Green Street', 'Hanoi', 'Vietnam', '52332322', 100),
+			('Cross Junction', 'Red Tower Street', 'Perth', 'Australia', '87432111', 100);
 	`)
 }
 
