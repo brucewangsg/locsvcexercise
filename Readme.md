@@ -81,3 +81,17 @@ POST /location_preference
 e.g.
 curl -X PUT "http://localhost:5678/location_preference" -H "Accept: application/json" -H "Authorization: Bearer {jwtToken}" -d '{"location_id":1}'
 ```
+
+## Setting up server
+
+```
+docker-compose up -d --scale app=2
+
+# create databases
+docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise
+docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise_test
+
+# migrate schema and seed data
+DB_NAME=locexercise docker exec -ti locsvcexercise_app_1 migratedb
+DB_NAME=locexercise_test docker exec -ti locsvcexercise_app_1 migratedb
+```
