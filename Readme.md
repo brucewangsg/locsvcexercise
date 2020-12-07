@@ -32,7 +32,7 @@ go build -o bin/migratedb cmds/migrate.go
 DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbpass} bin/migratedb
 ```
 
-Replace env variables accordingly.
+Replace env variables accordingly. If you are developing on your local environment, you can copy `sample.env` into `.env` file. Change all the configuration needed on that file.
 
 
 ## API Server
@@ -98,7 +98,6 @@ docker-compose up -d --scale app=2
 # create databases
 
 docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise
-docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise_test
 
 # migrate schema and seed data
 

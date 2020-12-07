@@ -73,11 +73,15 @@ func NewAppDBPool(config *AppConfig) *gorm.DB {
 		config.DatabaseName,
 	)
 
+	logLevel := logger.Info
+	if os.Getenv("PROD") == "1" {
+		logLevel = logger.Silent
+	}
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dbstr,
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logLevel),
 	})
 
 	sqlDB, err := db.DB()
