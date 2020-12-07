@@ -1,6 +1,7 @@
 package coresvc
 
 import (
+	"github.com/brucewangsg/locsvcexercise/authsvc"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -16,4 +17,7 @@ func AddRoutes(app *fiber.App, db *gorm.DB) {
 	app.Get("/locations", r.getAllLocation)
 	app.Post("/locations", r.getAllLocation)
 	app.Get("/locations/:id", r.getLocationDetail)
+
+	app.Use("/location_preference", authsvc.JwtMiddleware)
+	app.Put("/location_preference", r.updateUserPreferredLocation)
 }

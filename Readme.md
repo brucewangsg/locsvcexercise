@@ -73,3 +73,11 @@ GET /locations/:id
 
 curl "http://localhost:5678/locations/1"
 ```
+
+
+```
+POST /location_preference
+
+e.g.
+curl -X PUT "http://localhost:5678/location_preference" -H "Accept: application/json" -H "Authorization: Bearer {jwtToken}" -d '{"location_id":1}'
+```
