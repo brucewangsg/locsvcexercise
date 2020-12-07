@@ -24,16 +24,16 @@ func (r *routeContext) login(c *fiber.Ctx) error {
 		return err
 	}
 
-	if user.ID == 0 {
-		return errors.New("user not found")
-	}
-
 	if err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(params.Password)); err != nil {
 		c.SendStatus(http.StatusUnauthorized)
 		return errors.New("Unathorized")
 	}
 
-	jwtToken := "token"
+	jwtToken, err := user.getJwtToken()
+	if err != nil {
+		return err
+	}
+
 	marshalledJSON, _ := json.Marshal(&struct {
 		Token string
 		User  userJSONSerializer
