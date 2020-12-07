@@ -16,6 +16,7 @@ Create database schema
 
 ```
 docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise
+docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise_test
 ```
 
 ```

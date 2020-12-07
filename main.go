@@ -17,6 +17,8 @@ func newApp(db *gorm.DB) *fiber.App {
 		c.SendString("Nothing to see here")
 		return nil
 	})
+	coresvc.AddRoutes(app, db)
+	authsvc.AddRoutes(app, db)
 
 	return app
 }
@@ -26,8 +28,5 @@ func main() {
 	db := coresvc.NewAppDBPool(config)
 
 	app := newApp(db)
-	coresvc.AddRoutes(app, db)
-	authsvc.AddRoutes(app, db)
-
 	log.Fatal(app.Listen(fmt.Sprintf(":%s", config.AppPort)))
 }

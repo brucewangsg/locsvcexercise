@@ -25,6 +25,10 @@ type CurrentUser struct {
 // JwtMiddleware intercept Authorization header and assign CurrentUser local
 func JwtMiddleware(c *fiber.Ctx) error {
 	auth := c.Get("Authorization")
+	if auth == "" {
+		c.SendStatus(http.StatusUnauthorized)
+		return errors.New("Unauthorized")
+	}
 
 	tokenString := ""
 	if len(auth) > 7 {
@@ -45,7 +49,6 @@ func JwtMiddleware(c *fiber.Ctx) error {
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Printf("%v %v %T\n", claims["name"], claims["email"], claims["id"])
 		userID, _ := claims["id"].(float64)
 		c.Locals("CurrentUser", &CurrentUser{
 			Name:  claims["name"].(string),
