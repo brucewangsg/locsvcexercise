@@ -2,6 +2,7 @@ package coresvc
 
 import (
 	"errors"
+	"net/http"
 	"strconv"
 
 	"github.com/brucewangsg/locsvcexercise/authsvc"
@@ -41,6 +42,7 @@ func (r *routeContext) handleLocationBooking(c *fiber.Ctx) error {
 
 	location.AvailableSlot = location.AvailableSlot - 1
 	r.DB.Clauses(clause.Locking{Strength: "UPDATE"}).Save(location)
+	c.SendStatus(http.StatusNoContent)
 
 	return tx.Commit().Error
 }
