@@ -1,0 +1,21 @@
+version: '3.3'
+  
+networks:
+  default:
+    driver: bridge
+
+services:
+  db:
+    image: mdillon/postgis:9.6-alpine
+    networks:
+      - default
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
