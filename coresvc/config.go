@@ -24,9 +24,11 @@ type AppConfig struct {
 
 // NewAppConfig get app config based on environment variable
 func NewAppConfig() *AppConfig {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Error loading .env file")
+	if os.Getenv("PROD") != "1" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Println("Error loading .env file")
+		}
 	}
 
 	config := new(AppConfig)

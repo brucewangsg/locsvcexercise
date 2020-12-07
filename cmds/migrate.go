@@ -30,8 +30,10 @@ func main() {
 
 	fmt.Println("Migrate locations table")
 	db.AutoMigrate(&coresvc.Location{})
+	db.Exec("CREATE INDEX location_names ON users (building_name)")
 	seedListingData(db)
 
 	fmt.Println("Migrate user locations table")
+	db.Exec("CREATE UNIQUE INDEX uniq_preferred_locations ON users (user_id)")
 	db.AutoMigrate(&coresvc.UserLocation{})
 }
