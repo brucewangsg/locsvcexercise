@@ -10,21 +10,25 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type appConfig struct {
+// AppConfig
+type AppConfig struct {
 	DatabaseHost string
 	DatabasePort string
 	DatabaseUser string
 	DatabasePass string
 	DatabaseName string
+	AppPort      string
 }
 
-func NewAppConfig() *appConfig {
-	config := new(appConfig)
+// NewAppConfig get app config based on environment variable
+func NewAppConfig() *AppConfig {
+	config := new(AppConfig)
 	config.DatabaseHost = os.Getenv("DB_HOST")
 	config.DatabasePort = os.Getenv("DB_PORT")
 	config.DatabaseUser = os.Getenv("DB_USER")
 	config.DatabasePass = os.Getenv("DB_PASS")
 	config.DatabaseName = os.Getenv("DB_NAME")
+	config.AppPort = os.Getenv("APP_PORT")
 
 	if config.DatabaseHost == "" {
 		config.DatabaseHost = "db"
@@ -42,10 +46,15 @@ func NewAppConfig() *appConfig {
 		config.DatabaseName = "locexercise"
 	}
 
+	if config.AppPort == "" {
+		config.AppPort = "5678"
+	}
+
 	return config
 }
 
-func NewAppDBPool(config *appConfig) *gorm.DB {
+// NewAppDBPool get db pool instance
+func NewAppDBPool(config *AppConfig) *gorm.DB {
 	dbstr := fmt.Sprintf(
 		`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`,
 		config.DatabaseHost,
@@ -59,7 +68,7 @@ func NewAppDBPool(config *appConfig) *gorm.DB {
 		DSN:                  dbstr,
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 
 	sqlDB, err := db.DB()

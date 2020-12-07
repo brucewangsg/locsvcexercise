@@ -24,3 +24,13 @@ DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbp
 ```
 
 replace env variables accordingly
+
+
+## API Server
+
+starting api server
+
+```
+go build -o bin/api main.go
+DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbpass} APP_PORT=5678 bin/api
+```

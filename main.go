@@ -2,14 +2,28 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/brucewangsg/locsvcexercise/coresvc"
+	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
+func newApp(db *gorm.DB) *fiber.App {
+	app := fiber.New()
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		c.SendString("Nothing to see here")
+		return nil
+	})
+
+	return app
+}
+
 func main() {
-	fmt.Println("Hello App")
 	config := coresvc.NewAppConfig()
 	db := coresvc.NewAppDBPool(config)
 
-	fmt.Println(db)
+	app := newApp(db)
+	log.Fatal(app.Listen(fmt.Sprintf(":%s", config.AppPort)))
 }
