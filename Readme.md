@@ -34,3 +34,12 @@ starting api server
 go build -o bin/api main.go
 DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbpass} APP_PORT=5678 bin/api
 ```
+
+### endpoints
+
+```
+POST /auths/register
+
+e.g.
+curl -X POST "http://localhost:5678/auths/register" -H "Accept: application/json" -d '{"email": "user@gmail.com", "name": "User 1", "password": "PASS"}'
+```

@@ -2,15 +2,17 @@ package coresvc
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-// AppConfig
+// AppConfig database and app port
 type AppConfig struct {
 	DatabaseHost string
 	DatabasePort string
@@ -22,6 +24,11 @@ type AppConfig struct {
 
 // NewAppConfig get app config based on environment variable
 func NewAppConfig() *AppConfig {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+
 	config := new(AppConfig)
 	config.DatabaseHost = os.Getenv("DB_HOST")
 	config.DatabasePort = os.Getenv("DB_PORT")

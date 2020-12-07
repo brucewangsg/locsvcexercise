@@ -18,11 +18,6 @@ func AddRoutes(app *fiber.App, db *gorm.DB) {
 	app.Post("/auths/verify", r.verify)
 }
 
-func (r *routeContext) register(c *fiber.Ctx) error {
-	c.SendString("{\"info\": \"register\"}")
-	return nil
-}
-
 func (r *routeContext) login(c *fiber.Ctx) error {
 	c.SendString("{\"info\": \"login\"}")
 	return nil

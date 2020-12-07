@@ -17,4 +17,6 @@ vendor/
 # binary directory
 bin/
 
+# dotenv
+.env
 
