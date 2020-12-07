@@ -15,7 +15,7 @@ type loginParams struct {
 	Password string `json:"password"`
 }
 
-func (r *routeContext) login(c *fiber.Ctx) error {
+func (r *routeContext) handleLogin(c *fiber.Ctx) error {
 	params, err := getLoginParams(c)
 
 	user := &User{ID: 0}

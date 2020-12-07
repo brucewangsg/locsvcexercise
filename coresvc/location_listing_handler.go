@@ -13,15 +13,13 @@ type nextItemParams struct {
 	LastID           uint   `json:"last_id"`
 }
 
-func (r *routeContext) getAllLocation(c *fiber.Ctx) error {
+func (r *routeContext) handleGetAllLocation(c *fiber.Ctx) error {
 	params, _ := getListingParams(c)
-	locations := getFilteredLocations(r.DB, params)
+	locations := remapToSerializedTypeLocations(
+		*getFilteredLocations(r.DB, params),
+	)
 
-	serializedLocations := make([]locationJSONSerializer, 0, len(*locations))
-	for _, location := range *locations {
-		serializedLocations = append(serializedLocations, locationJSONSerializer(location))
-	}
-	marshalledJSON, _ := json.Marshal(serializedLocations)
+	marshalledJSON, _ := json.Marshal(locations)
 	c.Send(marshalledJSON)
 	return nil
 }
@@ -50,4 +48,12 @@ func getListingParams(c *fiber.Ctx) (*nextItemParams, error) {
 		return params, err
 	}
 	return params, nil
+}
+
+func remapToSerializedTypeLocations(locations []Location) []locationJSONSerializer {
+	remappedLocations := make([]locationJSONSerializer, 0, len(locations))
+	for _, location := range locations {
+		remappedLocations = append(remappedLocations, locationJSONSerializer(location))
+	}
+	return remappedLocations
 }

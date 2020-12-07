@@ -20,7 +20,7 @@ func (u userJSONSerializer) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func (r *routeContext) getUserPreferredLocation(c *fiber.Ctx) error {
+func (r *routeContext) handleGetUserPreferredLocation(c *fiber.Ctx) error {
 	currentUser := c.Locals("CurrentUser").(*authsvc.CurrentUser)
 
 	userLocation := &UserLocation{}

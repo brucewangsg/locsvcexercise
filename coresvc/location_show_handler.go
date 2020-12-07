@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (r *routeContext) getLocationDetail(c *fiber.Ctx) error {
+func (r *routeContext) handleGetLocationDetail(c *fiber.Ctx) error {
 	location := &Location{}
 	locationID, _ := strconv.Atoi(c.Params("id"))
 	err := r.DB.Where("id = ?", locationID).First(location).Error

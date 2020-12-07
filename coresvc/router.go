@@ -14,11 +14,11 @@ type routeContext struct {
 func AddRoutes(app *fiber.App, db *gorm.DB) {
 	r := &routeContext{DB: db}
 
-	app.Get("/locations", r.getAllLocation)
-	app.Post("/locations", r.getAllLocation)
-	app.Get("/locations/:id", r.getLocationDetail)
+	app.Get("/locations", r.handleGetAllLocation)
+	app.Post("/locations", r.handleGetAllLocation)
+	app.Get("/locations/:id", r.handleGetLocationDetail)
 
 	app.Use("/location_preference", authsvc.JwtMiddleware)
-	app.Put("/location_preference", r.updateUserPreferredLocation)
-	app.Get("/location_preference", r.getUserPreferredLocation)
+	app.Put("/location_preference", r.handleUpdateUserPreferredLocation)
+	app.Get("/location_preference", r.handleGetUserPreferredLocation)
 }

@@ -16,7 +16,7 @@ type registerParams struct {
 	Password string `json:"password"`
 }
 
-func (r *routeContext) register(c *fiber.Ctx) error {
+func (r *routeContext) handleRegister(c *fiber.Ctx) error {
 	params, err := getRegisterParams(c)
 	if err != nil {
 		return err

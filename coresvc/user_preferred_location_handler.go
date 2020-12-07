@@ -14,7 +14,7 @@ type updatePreferredLocationParams struct {
 	LocationID uint `json:"location_id"`
 }
 
-func (r *routeContext) updateUserPreferredLocation(c *fiber.Ctx) error {
+func (r *routeContext) handleUpdateUserPreferredLocation(c *fiber.Ctx) error {
 	params, _ := getUpdateParams(c)
 	currentUser := c.Locals("CurrentUser").(*authsvc.CurrentUser)
 	location := &Location{}

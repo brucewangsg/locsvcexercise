@@ -67,9 +67,9 @@ func JwtMiddleware(c *fiber.Ctx) error {
 func AddRoutes(app *fiber.App, db *gorm.DB) {
 	r := &routeContext{DB: db}
 
-	app.Post("/auths/register", r.register)
-	app.Post("/auths/login", r.login)
+	app.Post("/auths/register", r.handleRegister)
+	app.Post("/auths/login", r.handleLogin)
 
 	app.Use("/auths/verify", JwtMiddleware)
-	app.Get("/auths/verify", r.verify)
+	app.Get("/auths/verify", r.handleTokenVerify)
 }

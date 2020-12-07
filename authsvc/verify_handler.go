@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (r *routeContext) verify(c *fiber.Ctx) error {
+func (r *routeContext) handleTokenVerify(c *fiber.Ctx) error {
 	currentUser := c.Locals("CurrentUser").(*CurrentUser)
 
 	marshalledJSON, _ := json.Marshal(&userJSONSerializer{
