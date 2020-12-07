@@ -69,7 +69,7 @@ func TestLogin(t *testing.T) {
 		t.Errorf("Break in, it should require jwt token")
 	}
 
-	req := httptest.NewRequest("POST", "/auths/verify", nil)
+	req := httptest.NewRequest("GET", "/auths/verify", nil)
 	req.Header.Set("Authorization", "Bearer "+jsonResponseToken)
 	resp, _ = app.Test(req)
 	if resp.StatusCode != http.StatusOK {
