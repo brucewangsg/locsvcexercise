@@ -1,6 +1,9 @@
 package main
 
-import "github.com/brucewangsg/locsvcexercise/authsvc"
+import (
+	"github.com/brucewangsg/locsvcexercise/authsvc"
+	"github.com/brucewangsg/locsvcexercise/coresvc"
+)
 
 func main() {
 	config := newAppConfig()
@@ -8,4 +11,6 @@ func main() {
 
 	db.AutoMigrate(&authsvc.User{})
 	db.Exec("CREATE UNIQUE INDEX users_email ON users (email)")
+
+	db.AutoMigrate(&coresvc.Location{})
 }
