@@ -32,7 +32,11 @@ func getFilteredLocations(db *gorm.DB, params *nextItemParams) *[]Location {
 	finder = finder.Order("building_name ASC, id DESC")
 
 	if params.LastBuildingName != "" && params.LastID != 0 {
-		finder = finder.Where("building_name >= ? AND id > ?", params.LastBuildingName, params.LastID)
+		finder = finder.Where(
+			"building_name > ? OR (building_name = ? AND id < ?)",
+			params.LastBuildingName,
+			params.LastBuildingName,
+			params.LastID)
 	}
 	finder.Find(locations)
 
