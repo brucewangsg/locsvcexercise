@@ -71,5 +71,5 @@ func AddRoutes(app *fiber.App, db *gorm.DB) {
 	app.Post("/auths/login", r.login)
 
 	app.Use("/auths/verify", JwtMiddleware)
-	app.Post("/auths/verify", r.verify)
+	app.Get("/auths/verify", r.verify)
 }

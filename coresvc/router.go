@@ -20,4 +20,5 @@ func AddRoutes(app *fiber.App, db *gorm.DB) {
 
 	app.Use("/location_preference", authsvc.JwtMiddleware)
 	app.Put("/location_preference", r.updateUserPreferredLocation)
+	app.Get("/location_preference", r.getUserPreferredLocation)
 }
