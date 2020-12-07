@@ -51,3 +51,11 @@ POST /auths/login
 e.g.
 curl -X POST "http://localhost:5678/auths/login" -H "Accept: application/json" -d '{"email": "user@gmail.com", "password": "PASS"}'
 ```
+
+
+```
+POST /auths/verify
+
+e.g.
+curl -X POST "http://localhost:5678/auths/verify" -H "Accept: application/json" -H "Authorization: Bearer {jwtToken}"
+```

@@ -44,8 +44,10 @@ func (u userJSONSerializer) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Name  string `json:"name"`
 		Email string `json:"email"`
+		ID    uint   `json:"id"`
 	}{
 		Name:  u.Name,
 		Email: u.Email,
+		ID:    u.ID,
 	})
 }
