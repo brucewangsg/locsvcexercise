@@ -12,19 +12,27 @@ Spin up your postgresql database. Or you can use docker-compose to create your p
 docker-compose up -d db
 ```
 
-Create database schema
+If you would like to setup default db password
+
+```
+export POSTGRES_PASSWORD={yourdbpass}
+docker-compose up -d db
+```
+
+Create databases
 
 ```
 docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise
 docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise_test
 ```
 
+
 ```
 go build -o bin/migratedb cmds/migrate.go
 DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbpass} bin/migratedb
 ```
 
-replace env variables accordingly
+Replace env variables accordingly.
 
 
 ## API Server
@@ -36,7 +44,7 @@ go build -o bin/api main.go
 DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbpass} APP_PORT=5678 bin/api
 ```
 
-### endpoints
+### API endpoints
 
 ```
 POST /auths/register
@@ -87,11 +95,12 @@ curl -X PUT "http://localhost:5678/location_preference" -H "Accept: application/
 ```
 docker-compose up -d --scale app=2
 
-# create databases
+// create databases
+
 docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise
 docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise_test
 
-# migrate schema and seed data
+// migrate schema and seed data
 DB_NAME=locexercise docker exec -ti locsvcexercise_app_1 /migratedb
 DB_NAME=locexercise_test docker exec -ti locsvcexercise_app_1 /migratedb
 ```
@@ -99,19 +108,20 @@ DB_NAME=locexercise_test docker exec -ti locsvcexercise_app_1 /migratedb
 Test it out
 
 ```
-go to http://localhost:5678/, and you will see nothing
+// go to http://localhost:5678/, and you will see nothing
 
 curl -X POST "http://localhost:5678/auths/register" -d '{"name": "John Chow", "email": "john@email.com", "password": "PASS"}'
 curl -X POST "http://localhost:5678/auths/login" -d '{"email": "john@email.com", "password": "PASS"}'
 
-grab the jwt token or use jq
+// get the jwt token from the response, the token will be used for auth token for subsequent requests
+// or you can use jq
 
 token=$(curl --silent -X POST "http://localhost:5678/auths/login" -d '{"email": "john@email.com", "password": "PASS"}' | jq --raw-output '.Token')
 
 curl "http://localhost:5678/locations"
 curl -X PUT "http://localhost:5678/location_preference" -H "Authorization: Bearer $token" -d '{"location_id":1}'
 
-you will see saved location in your profile
+// you will see saved location in your profile
 
 curl "http://localhost:5678/location_preference" -H "Authorization: Bearer $token"
 ```
