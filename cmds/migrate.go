@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	config := newAppConfig()
-	db := newAppDBPool(config)
+	config := coresvc.NewAppConfig()
+	db := coresvc.NewAppDBPool(config)
 
 	fmt.Println("Migrate users table")
 	db.AutoMigrate(&authsvc.User{})

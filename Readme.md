@@ -6,8 +6,20 @@ The app uses postgresql to store data. Interfacing with db from go app is done u
 
 ### migrating database
 
+Spin up your postgresql database. Or you can use docker-compose to create your pg instance
+
 ```
-go build -o bin/migratedb cmds/config.go cmds/migrate.go
+docker-compose up -d db
+```
+
+Create database schema
+
+```
+docker exec -ti locsvcexercise_db_1 createdb -U postgres locexercise
+```
+
+```
+go build -o bin/migratedb cmds/migrate.go
 DB_HOST={host} DB_USER={user} DB_NAME={dbname} DB_PORT={dbport} DB_PASS={yourdbpass} bin/migratedb
 ```
 

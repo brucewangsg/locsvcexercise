@@ -1,4 +1,4 @@
-package main
+package coresvc
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ type appConfig struct {
 	DatabaseName string
 }
 
-func newAppConfig() *appConfig {
+func NewAppConfig() *appConfig {
 	config := new(appConfig)
 	config.DatabaseHost = os.Getenv("DB_HOST")
 	config.DatabasePort = os.Getenv("DB_PORT")
@@ -45,7 +45,7 @@ func newAppConfig() *appConfig {
 	return config
 }
 
-func newAppDBPool(config *appConfig) *gorm.DB {
+func NewAppDBPool(config *appConfig) *gorm.DB {
 	dbstr := fmt.Sprintf(
 		`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`,
 		config.DatabaseHost,
