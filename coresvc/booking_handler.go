@@ -22,7 +22,7 @@ func (r *routeContext) handleLocationBooking(c *fiber.Ctx) error {
 	}()
 
 	location := &Location{}
-	err := r.DB.Clauses(clause.Locking{Strength: "UPDATE NOWAIT"}).Where("id = ?", locationID).Find(&location).Error
+	err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", locationID).Find(&location).Error
 
 	if err != nil {
 		return errors.New("failed to book, try again later")
@@ -34,14 +34,14 @@ func (r *routeContext) handleLocationBooking(c *fiber.Ctx) error {
 	}
 
 	booking := &Booking{UserID: currentUser.ID}
-	err = r.DB.Save(booking).Error
+	err = tx.Save(booking).Error
 	if err != nil {
 		tx.Rollback()
 		return errors.New("only allowed to book once per location per user")
 	}
 
 	location.AvailableSlot = location.AvailableSlot - 1
-	r.DB.Clauses(clause.Locking{Strength: "UPDATE"}).Save(location)
+	tx.Clauses(clause.Locking{Strength: "UPDATE"}).Save(location)
 	c.SendStatus(http.StatusNoContent)
 
 	return tx.Commit().Error

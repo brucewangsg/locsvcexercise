@@ -1,6 +1,6 @@
 package coresvc
 
-// UserLocation stores preferred location
+// Booking stores location bookings
 type Booking struct {
 	ID         uint `gorm:"primaryKey"`
 	UserID     uint
