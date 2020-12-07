@@ -43,3 +43,11 @@ POST /auths/register
 e.g.
 curl -X POST "http://localhost:5678/auths/register" -H "Accept: application/json" -d '{"email": "user@gmail.com", "name": "User 1", "password": "PASS"}'
 ```
+
+
+```
+POST /auths/login
+
+e.g.
+curl -X POST "http://localhost:5678/auths/login" -H "Accept: application/json" -d '{"email": "user@gmail.com", "password": "PASS"}'
+```
